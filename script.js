@@ -17,13 +17,20 @@ const APP = {
     let country = document.getElementById("country");
     let zip = document.getElementById("zip");
     let password = document.getElementById("password");
-    let confirmPassword = document.getElementById("confirm_password");
+    let repeatPassword = document.getElementById("confirm_password");
 
     //after changing the whole value
     email.addEventListener("change", APP.testEmail);
     zip.addEventListener("change", APP.testZip);
     password.addEventListener("change", APP.testPassword);
     repeatPassword.addEventListener("change", APP.testRepeatPassword);
+
+    //while typing
+    zip.addEventListener("input", APP.formatZip);
+
+    //what to do if something went wrong during validation
+
+    //when the form gets submitted, in case of any last-minute changes. Add high five here
   },
 
   testEmail(event) {
@@ -40,6 +47,12 @@ const APP = {
         email.reportValidity(); //show the custom message, trigger invalid event
       }
     }
+  },
+  formatZip(event) {
+    let enteredZip = event.target;
+    let ZipVal = enteredZip.value;
+    ZipVal = ZipVal.toUpperCase();
+    enteredZip.value = ZipVal; //converts anything typed to uppercase
   },
 };
 document.addEventListener("DOMContentLoaded", APP.init);
