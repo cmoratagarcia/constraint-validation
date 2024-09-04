@@ -26,6 +26,9 @@ const APP = {
     repeatPassword.addEventListener("change", APP.testRepeatPassword);
 
     //while typing
+    email.addEventListener("input", function () {
+      email.setCustomValidity("");
+    });
     zip.addEventListener("input", APP.formatZip);
 
     //what to do if something went wrong during validation
@@ -37,17 +40,14 @@ const APP = {
     let email = event.target;
     email.setCustomValidity(""); //clear old message
     //built-in test for error based on type, pattern, and other attrs
-    let isValid = email.checkValidity();
-    //console.log('currently', currently);
-    if (isValid) {
-      let emReg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      if (emReg.test(email.value) === false) {
-        //not a valid address
-        email.setCustomValidity("Please enter a valid email address.");
-        email.reportValidity(); //show the custom message, trigger invalid event
-      }
+    let emReg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (emReg.test(email.value) === false) {
+      //not a valid address
+      email.setCustomValidity("Please enter a valid email address.");
+      email.reportValidity(); //show the custom message, trigger invalid event
     }
   },
+
   formatZip(event) {
     let enteredZip = event.target;
     let ZipVal = enteredZip.value;
