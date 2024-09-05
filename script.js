@@ -27,9 +27,10 @@ const APP = {
 
     //while typing
     email.addEventListener("input", function () {
-      email.setCustomValidity("");
+      email.setCustomValidity(""); //so the prompt doesn't keep displaying while the user types
     });
-    zip.addEventListener("input", APP.formatZip);
+
+    zip.addEventListener("input", APP.formatZip); //change to all caps
 
     //what to do if something went wrong during validation
 
@@ -45,6 +46,14 @@ const APP = {
       //not a valid address
       email.setCustomValidity("Please enter a valid email address.");
       email.reportValidity(); //show the custom message, trigger invalid event
+    }
+  },
+
+  testCountry() {
+    country.setCustomValidity(""); //clear old message
+    if (!country.value) {
+      country.setCustomValidity("Please select a country.");
+      country.reportValidity(); //show the custom message, trigger invalid event
     }
   },
 
