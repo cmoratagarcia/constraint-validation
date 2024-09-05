@@ -34,6 +34,15 @@
         <div class="form-group">
           <label for="password">Password</label>
           <input type="password" id="password" name="password" required />
+          <div id="password-requirements">
+            <p>Password must include:</p>
+            <ul>
+              <li id="length" class="invalid">At least 8 characters</li>
+              <li id="uppercase" class="invalid">At least one uppercase letter</li>
+              <li id="lowercase" class="invalid">At least one lowercase letter</li>
+              <li id="number" class="invalid">At least one number</li>
+            </ul>
+          </div>
         </div>
 
         <div class="form-group">
