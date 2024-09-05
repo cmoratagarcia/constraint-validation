@@ -20,15 +20,15 @@ const APP = {
     let repeatPassword = document.getElementById("confirm_password");
 
     //after changing the whole value
-    email.addEventListener("change", APP.testEmail);
-    zip.addEventListener("change", APP.testZip);
+    email.addEventListener("change", APP.testEmail); //Use blur instead?
+    zip.addEventListener("blur", APP.testZip);
     password.addEventListener("change", APP.testPassword);
     repeatPassword.addEventListener("change", APP.testRepeatPassword);
 
     //while typing
     email.addEventListener("input", function () {
       email.setCustomValidity(""); //so the prompt doesn't keep displaying while the user types
-    });
+    }); //Move this to separate function for all fields?
 
     zip.addEventListener("input", APP.formatZip); //change to all caps
 
@@ -62,6 +62,37 @@ const APP = {
     let ZipVal = enteredZip.value;
     ZipVal = ZipVal.toUpperCase();
     enteredZip.value = ZipVal; //converts anything typed to uppercase
+  },
+
+  testZip() {
+    let selectedCountry = country.value;
+    zip.setCustomValidity("");
+    switch (selectedCountry) {
+      case "us":
+        zip.setAttribute("pattern", "\\d{5}(-\\d{4})?");
+        zip.setAttribute("maxlength", "10");
+        break;
+      case "ca":
+        zip.setAttribute("pattern", "[A-Za-z]\\d[A-Za-z] ?\\d[A-Za-z]\\d");
+        zip.setAttribute("maxlength", "7");
+        break;
+      case "uk":
+        zip.setAttribute(
+          "pattern",
+          "^[A-Z]{1,2}[0-9]{1,2}[A-Z]?\\s?[0-9][A-Z]{2}$"
+        );
+        zip.setAttribute("maxlength", "8");
+        break;
+      default:
+        zip.removeAttribute("pattern");
+        zip.removeAttribute("maxlength");
+    }
+    let zipStatus = zip.checkValidity();
+    if (!zipStatus) {
+      console.log(selectedCountry);
+      zip.setCustomValidity("Please enter a valid zip code.");
+      zip.reportValidity();
+    }
   },
 };
 document.addEventListener("DOMContentLoaded", APP.init);
