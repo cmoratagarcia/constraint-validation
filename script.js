@@ -100,6 +100,7 @@ const APP = {
     const upperSpec = document.getElementById("uppercase");
     const lowerSpec = document.getElementById("lowercase");
     const numberSpec = document.getElementById("number");
+    const pwRequirements = document.getElementById("password-requirements");
 
     let enteredPw = password.value;
     if (enteredPw.length >= 8) {
@@ -119,7 +120,22 @@ const APP = {
     if (/[0-9]/.test(enteredPw)) {
       numberSpec.classList.remove("invalid");
       numberSpec.classList.add("valid");
-    } //hide pw must include if all correct
+    }
+    let requirements = document.querySelectorAll(".requirement");
+    let hasInvalid = true;
+
+    for (let item of requirements) {
+      //hide 'Pasword must include' if all correct
+      if (item.classList.contains("invalid")) {
+        break; // Exit the loop if we find an invalid item
+      } else {
+        hasInvalid = false;
+      }
+    }
+
+    if (!hasInvalid) {
+      pwRequirements.classList.add("valid");
+    }
   },
 
   testRepeatPassword(event) {
