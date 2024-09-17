@@ -119,6 +119,15 @@ const APP = {
     if (/[0-9]/.test(enteredPw)) {
       numberSpec.classList.remove("invalid");
       numberSpec.classList.add("valid");
+    } //hide pw must include if all correct
+  },
+
+  testRepeatPassword(event) {
+    let confirmPw = event.target;
+    confirmPw.setCustomValidity("");
+    if (confirmPw.value !== password.value) {
+      confirmPw.setCustomValidity("Passwords don't match");
+      confirmPw.reportValidity();
     }
   },
 };
