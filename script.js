@@ -21,7 +21,8 @@ const APP = {
 
     //after changing the whole value
     email.addEventListener("change", APP.testEmail); //Use blur instead?
-    zip.addEventListener("blur", APP.testZip);
+    zip.addEventListener("change", APP.testZip);
+    country.addEventListener("blur", APP.testCountry);
     password.addEventListener("change", APP.testPassword);
     repeatPassword.addEventListener("change", APP.testRepeatPassword);
 
@@ -69,18 +70,18 @@ const APP = {
     zip.setCustomValidity("");
     switch (selectedCountry) {
       case "us":
-        zip.setAttribute("pattern", "\\d{5}(-\\d{4})?");
+        zip.setAttribute("pattern", "\\d{5}(-\\d{4})?"); //5 digits or ZIP+4
         zip.setAttribute("maxlength", "10");
         break;
       case "ca":
-        zip.setAttribute("pattern", "[A-Za-z]\\d[A-Za-z] ?\\d[A-Za-z]\\d");
+        zip.setAttribute("pattern", "[A-Za-z]\\d[A-Za-z] ?\\d[A-Za-z]\\d"); //Alphanumeric in the format A1A 1A1
         zip.setAttribute("maxlength", "7");
         break;
       case "uk":
         zip.setAttribute(
           "pattern",
           "^[A-Z]{1,2}[0-9]{1,2}[A-Z]?\\s?[0-9][A-Z]{2}$"
-        );
+        ); //2-4ch + 3ch
         zip.setAttribute("maxlength", "8");
         break;
       default:
@@ -89,9 +90,35 @@ const APP = {
     }
     let zipStatus = zip.checkValidity();
     if (!zipStatus) {
-      console.log(selectedCountry);
       zip.setCustomValidity("Please enter a valid zip code.");
       zip.reportValidity();
+    }
+  },
+
+  testPassword() {
+    const lengthSpec = document.getElementById("length");
+    const upperSpec = document.getElementById("uppercase");
+    const lowerSpec = document.getElementById("lowercase");
+    const numberSpec = document.getElementById("number");
+
+    let enteredPw = password.value;
+    if (enteredPw.length >= 8) {
+      lengthSpec.classList.remove("invalid");
+      lengthSpec.classList.add("valid");
+    }
+    if (/[A-Z]/.test(enteredPw)) {
+      upperSpec.classList.remove("invalid");
+      upperSpec.classList.add("valid");
+    }
+
+    if (/[a-z]/.test(enteredPw)) {
+      lowerSpec.classList.remove("invalid");
+      lowerSpec.classList.add("valid");
+    }
+
+    if (/[0-9]/.test(enteredPw)) {
+      numberSpec.classList.remove("invalid");
+      numberSpec.classList.add("valid");
     }
   },
 };
