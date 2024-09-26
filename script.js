@@ -106,21 +106,20 @@ const APP = {
 
     let enteredPw = password.value;
 
-    enteredPw.length >= 8
-      ? (lengthSpec.style.display = "none")
-      : lengthSpec.classList.add("invalid");
+    const criteria = [
+      { regex: /.{8,}/, element: lengthSpec },
+      { regex: /[A-Z]/, element: upperSpec },
+      { regex: /[a-z]/, element: lowerSpec },
+      { regex: /[0-9]/, element: numberSpec },
+    ];
 
-    /[A-Z]/.test(enteredPw)
-      ? (upperSpec.style.display = "none")
-      : upperSpec.classList.add("invalid");
-
-    /[a-z]/.test(enteredPw)
-      ? (lowerSpec.style.display = "none")
-      : lowerSpec.classList.add("invalid");
-
-    /[0-9]/.test(enteredPw)
-      ? (numberSpec.style.display = "none")
-      : numberSpec.classList.add("invalid");
+    criteria.forEach(({ regex, element }) => {
+      if (regex.test(enteredPw)) {
+        element.style.display = "none"; // or remove 'invalid' class
+      } else {
+        element.classList.add("invalid");
+      }
+    });
 
     let requirements = document.querySelectorAll(".requirement");
     let hasInvalid = true;
