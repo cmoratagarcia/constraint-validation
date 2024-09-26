@@ -47,8 +47,8 @@ body {
    border-color: red;
   }
 
-.valid {
-display: none;
+.invalid {
+color: red;
 }
 
 button {

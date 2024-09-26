@@ -105,24 +105,23 @@ const APP = {
     const pwRequirements = document.getElementById("password-requirements");
 
     let enteredPw = password.value;
-    if (enteredPw.length >= 8) {
-      lengthSpec.classList.remove("invalid");
-      lengthSpec.classList.add("valid");
-    }
-    if (/[A-Z]/.test(enteredPw)) {
-      upperSpec.classList.remove("invalid");
-      upperSpec.classList.add("valid");
-    }
 
-    if (/[a-z]/.test(enteredPw)) {
-      lowerSpec.classList.remove("invalid");
-      lowerSpec.classList.add("valid");
-    }
+    enteredPw.length >= 8
+      ? (lengthSpec.style.display = "none")
+      : lengthSpec.classList.add("invalid");
 
-    if (/[0-9]/.test(enteredPw)) {
-      numberSpec.classList.remove("invalid");
-      numberSpec.classList.add("valid");
-    }
+    /[A-Z]/.test(enteredPw)
+      ? (upperSpec.style.display = "none")
+      : upperSpec.classList.add("invalid");
+
+    /[a-z]/.test(enteredPw)
+      ? (lowerSpec.style.display = "none")
+      : lowerSpec.classList.add("invalid");
+
+    /[0-9]/.test(enteredPw)
+      ? (numberSpec.style.display = "none")
+      : numberSpec.classList.add("invalid");
+
     let requirements = document.querySelectorAll(".requirement");
     let hasInvalid = true;
 
