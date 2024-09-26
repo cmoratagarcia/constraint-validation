@@ -12,7 +12,7 @@ const APP = {
     APP.addListeners();
   },
   addListeners() {
-    let form = document.getElementsByClassName("form");
+    let form = document.getElementById("form");
     let email = document.getElementById("email");
     let country = document.getElementById("country");
     let zip = document.getElementById("zip");
@@ -33,9 +33,11 @@ const APP = {
 
     zip.addEventListener("input", APP.formatZip); //change to all caps
 
-    //what to do if something went wrong during validation
+    //create fail function with switch statement for all errors?
 
-    //when the form gets submitted, in case of any last-minute changes. Add high five here
+    //when the form gets submitted, in case of any last-minute changes.
+    form.addEventListener("submit", APP.validate);
+    //If all is well and the form is “submitted”, give the user a high five.
   },
 
   testEmail(event) {
@@ -146,6 +148,18 @@ const APP = {
       confirmPw.reportValidity();
     }
   },
+
+  validate(event) {
+    event.preventDefault();
+
+    let form = event.target;
+    if (!form.checkValidity()) {
+      form.setCustomValidity("Please review incorrect fields");
+      form.reportValidity();
+    } else {
+      const highFive = document.getElementById("high-five");
+      highFive.style.display = "block";
+    }
+  },
 };
 document.addEventListener("DOMContentLoaded", APP.init);
-//If all is well and the form is “submitted”, give the user a high five.
