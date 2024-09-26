@@ -40,6 +40,10 @@ const APP = {
     //If all is well and the form is “submitted”, give the user a high five.
   },
 
+  clearCustomValidity(input) {
+    input.setCustomValidity("");
+  },
+
   testEmail(event) {
     let email = event.target;
     email.setCustomValidity(""); //clear old message
