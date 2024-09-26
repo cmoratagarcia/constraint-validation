@@ -42,7 +42,21 @@ body {
     box-sizing: border-box;
   }
 
+  input:invalid {
+   border-color: red;
+  }
+
 .valid {
 display: none;
 }
+
+button {
+    cursor: pointer;
+    border: none;
+    background-color: cornflowerblue;
+    color: #fff;
+    border-radius: 5px;
+    width: 35%;
+    padding: 0.5rem 1rem;
+  }
 
