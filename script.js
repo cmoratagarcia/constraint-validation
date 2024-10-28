@@ -13,26 +13,18 @@ const APP = {
   },
   addListeners() {
     let form = document.getElementById("form");
-    let email = document.getElementById("email");
-    let country = document.getElementById("country");
-    let zip = document.getElementById("zip");
-    let password = document.getElementById("password");
-    let repeatPassword = document.getElementById("confirm_password");
 
-    // //after changing the whole value
-    // email.addEventListener("change", APP.testEmail); //Use blur instead?
-    // zip.addEventListener("change", APP.testZip);
-    // country.addEventListener("blur", APP.testCountry);
-    // password.addEventListener("change", APP.testPassword);
-    // repeatPassword.addEventListener("change", APP.testRepeatPassword);
-
-    form.querySelectorAll("input, select").forEach((field) => {
+    form.querySelectorAll("input").forEach((field) => {
       field.addEventListener("change", () => APP.handleFieldValidity(field));
     });
 
-    zip.addEventListener("input", APP.formatZip); //change to all caps
+    form.querySelectorAll("select").forEach((field) => {
+      field.addEventListener("blur", () => APP.handleFieldValidity(field));
+    });
 
-    //create fail function with switch statement for all errors?
+    form.addEventListener("submit", APP.validate);
+
+    zip.addEventListener("input", APP.formatZip); //change to all caps
 
     //when the form gets submitted, in case of any last-minute changes.
     form.addEventListener("submit", APP.validate);
@@ -71,7 +63,7 @@ const APP = {
     }
 
     // Show the custom message if validity fails
-    if (!field.checkValidity()) {
+    if (field.validationMessage) {
       field.reportValidity();
     }
   },
@@ -180,8 +172,6 @@ const APP = {
 
     if (confirmPw !== password) {
       field.setCustomValidity("Passwords don't match");
-    } else {
-      field.setCustomValidity(""); // Clear the custom message if they match
     }
   },
 
