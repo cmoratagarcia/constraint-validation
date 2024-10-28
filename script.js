@@ -19,17 +19,16 @@ const APP = {
     let password = document.getElementById("password");
     let repeatPassword = document.getElementById("confirm_password");
 
-    //after changing the whole value
-    email.addEventListener("change", APP.testEmail); //Use blur instead?
-    zip.addEventListener("change", APP.testZip);
-    country.addEventListener("blur", APP.testCountry);
-    password.addEventListener("change", APP.testPassword);
-    repeatPassword.addEventListener("change", APP.testRepeatPassword);
+    // //after changing the whole value
+    // email.addEventListener("change", APP.testEmail); //Use blur instead?
+    // zip.addEventListener("change", APP.testZip);
+    // country.addEventListener("blur", APP.testCountry);
+    // password.addEventListener("change", APP.testPassword);
+    // repeatPassword.addEventListener("change", APP.testRepeatPassword);
 
-    //while typing
-    email.addEventListener("input", function () {
-      email.setCustomValidity(""); //so the prompt doesn't keep displaying while the user types
-    }); //Move this to separate function for all fields?
+    form.querySelectorAll("input, select").forEach((field) => {
+      field.addEventListener("change", () => APP.handleFieldValidity(field));
+    });
 
     zip.addEventListener("input", APP.formatZip); //change to all caps
 
@@ -40,8 +39,41 @@ const APP = {
     //If all is well and the form is “submitted”, give the user a high five.
   },
 
-  clearCustomValidity(input) {
-    input.setCustomValidity("");
+  handleFieldValidity(field) {
+    field.setCustomValidity(""); // Clear old message
+
+    // Test and show messages based on field's id or name
+    switch (field.id) {
+      case "email":
+        this.testEmail(field);
+
+        break;
+
+      case "country":
+        this.testCountry(field);
+
+        break;
+
+      case "zip":
+        this.testZip(field);
+
+        break;
+
+      case "password":
+        this.testPassword(field);
+
+        break;
+
+      case "confirm_password":
+        this.testRepeatPassword(field);
+
+        break;
+    }
+
+    // Show the custom message if validity fails
+    if (!field.checkValidity()) {
+      field.reportValidity();
+    }
   },
 
   testEmail(event) {
