@@ -119,9 +119,11 @@ const APP = {
 
     criteria.forEach(({ regex, element }) => {
       if (regex.test(enteredPw)) {
-        element.style.display = "none"; // or remove 'invalid' class
+        element.classList.add("valid");
+        element.classList.remove("invalid");
       } else {
         element.classList.add("invalid");
+        element.classList.remove("valid");
       }
     });
 
@@ -159,9 +161,21 @@ const APP = {
       form.setCustomValidity("Please review incorrect fields");
       form.reportValidity();
     } else {
-      const highFive = document.getElementById("high-five");
-      highFive.style.display = "block";
+      field.setCustomValidity(""); // Clear the custom message if they match
     }
   },
+
+  // validate(event) {
+  //   event.preventDefault();
+
+  //   let form = event.target;
+  //   if (!form.checkValidity()) {
+  //     form.setCustomValidity("Please review incorrect fields");
+  //     form.reportValidity();
+  //   } else {
+  //     const highFive = document.getElementById("high-five");
+  //     highFive.style.display = "block";
+  //   }
+  // },
 };
 document.addEventListener("DOMContentLoaded", APP.init);
