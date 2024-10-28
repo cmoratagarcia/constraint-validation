@@ -76,23 +76,18 @@ const APP = {
     }
   },
 
-  testEmail(event) {
-    let email = event.target;
-    email.setCustomValidity(""); //clear old message
+  testEmail(field) {
     //built-in test for error based on type, pattern, and other attrs
     let emReg = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (emReg.test(email.value) === false) {
-      //not a valid address
-      email.setCustomValidity("Please enter a valid email address.");
-      email.reportValidity(); //show the custom message, trigger invalid event
+    if (!emReg.test(field.value)) {
+      // If invalid, set custom message
+      field.setCustomValidity("Please enter a valid email address.");
     }
   },
 
-  testCountry() {
-    country.setCustomValidity(""); //clear old message
-    if (!country.value) {
-      country.setCustomValidity("Please select a country.");
-      country.reportValidity(); //show the custom message, trigger invalid event
+  testCountry(field) {
+    if (!field.value) {
+      field.setCustomValidity("Please select a country.");
     }
   },
 
@@ -103,44 +98,43 @@ const APP = {
     enteredZip.value = ZipVal; //converts anything typed to uppercase
   },
 
-  testZip() {
-    let selectedCountry = country.value;
-    zip.setCustomValidity("");
+  testZip(field) {
+    let selectedCountry = document.getElementById("country").value;
+
     switch (selectedCountry) {
       case "us":
-        zip.setAttribute("pattern", "\\d{5}(-\\d{4})?"); //5 digits or ZIP+4
-        zip.setAttribute("maxlength", "10");
+        field.setAttribute("pattern", "\\d{5}(-\\d{4})?"); //5 digits or ZIP+4
+        field.setAttribute("maxlength", "10");
         break;
       case "ca":
-        zip.setAttribute("pattern", "[A-Za-z]\\d[A-Za-z] ?\\d[A-Za-z]\\d"); //Alphanumeric in the format A1A 1A1
-        zip.setAttribute("maxlength", "7");
+        field.setAttribute("pattern", "[A-Za-z]\\d[A-Za-z] ?\\d[A-Za-z]\\d"); //Alphanumeric in the format A1A 1A1
+        field.setAttribute("maxlength", "7");
         break;
       case "uk":
-        zip.setAttribute(
+        field.setAttribute(
           "pattern",
           "^[A-Z]{1,2}[0-9]{1,2}[A-Z]?\\s?[0-9][A-Z]{2}$"
         ); //2-4ch + 3ch
-        zip.setAttribute("maxlength", "8");
+        field.setAttribute("maxlength", "8");
         break;
       default:
-        zip.removeAttribute("pattern");
-        zip.removeAttribute("maxlength");
+        field.removeAttribute("pattern");
+        field.removeAttribute("maxlength");
     }
-    let zipStatus = zip.checkValidity();
-    if (!zipStatus) {
-      zip.setCustomValidity("Please enter a valid zip code.");
-      zip.reportValidity();
+
+    if (!field.checkValidity()) {
+      field.setCustomValidity("Please enter a valid zip code.");
     }
   },
 
-  testPassword() {
+  testPassword(field) {
     const lengthSpec = document.getElementById("length");
     const upperSpec = document.getElementById("uppercase");
     const lowerSpec = document.getElementById("lowercase");
     const numberSpec = document.getElementById("number");
     const pwRequirements = document.getElementById("password-requirements");
 
-    let enteredPw = password.value;
+    let enteredPw = field.value;
 
     const criteria = [
       { regex: /.{8,}/, element: lengthSpec },
@@ -174,24 +168,18 @@ const APP = {
     if (!hasInvalid) {
       pwRequirements.classList.add("valid");
     }
+
+    // Revalidate the confirm password field after password changes
+    const confirmPasswordField = document.getElementById("confirm_password");
+    this.testRepeatPassword(confirmPasswordField);
   },
 
-  testRepeatPassword(event) {
-    let confirmPw = event.target;
-    confirmPw.setCustomValidity("");
-    if (confirmPw.value !== password.value) {
-      confirmPw.setCustomValidity("Passwords don't match");
-      confirmPw.reportValidity();
-    }
-  },
+  testRepeatPassword(field) {
+    let confirmPw = field.value;
+    let password = document.getElementById("password").value;
 
-  validate(event) {
-    event.preventDefault();
-
-    let form = event.target;
-    if (!form.checkValidity()) {
-      form.setCustomValidity("Please review incorrect fields");
-      form.reportValidity();
+    if (confirmPw !== password) {
+      field.setCustomValidity("Passwords don't match");
     } else {
       field.setCustomValidity(""); // Clear the custom message if they match
     }
