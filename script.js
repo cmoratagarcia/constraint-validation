@@ -12,14 +12,10 @@ const APP = {
     APP.addListeners();
   },
   addListeners() {
-    let form = document.getElementById("form");
+    const form = document.getElementById("form");
 
     form.querySelectorAll("input").forEach((field) => {
       field.addEventListener("change", () => APP.handleFieldValidity(field));
-    });
-
-    form.querySelectorAll("select").forEach((field) => {
-      field.addEventListener("blur", () => APP.handleFieldValidity(field));
     });
 
     form.addEventListener("submit", APP.validate);
@@ -159,8 +155,11 @@ const APP = {
 
     if (!hasInvalid) {
       pwRequirements.classList.add("valid");
+      pwRequirements.classList.remove("invalid");
+    } else {
+      pwRequirements.classList.add("invalid");
+      pwRequirements.classList.remove("valid");
     }
-
     // Revalidate the confirm password field after password changes
     const confirmPasswordField = document.getElementById("confirm_password");
     this.testRepeatPassword(confirmPasswordField);
@@ -175,17 +174,30 @@ const APP = {
     }
   },
 
-  // validate(event) {
-  //   event.preventDefault();
+  validate(event) {
+    event.preventDefault(); // Prevent form submission for validation check
 
-  //   let form = event.target;
-  //   if (!form.checkValidity()) {
-  //     form.setCustomValidity("Please review incorrect fields");
-  //     form.reportValidity();
-  //   } else {
-  //     const highFive = document.getElementById("high-five");
-  //     highFive.style.display = "block";
-  //   }
-  // },
+    let form = event.target;
+    let isFormValid = true;
+
+    // Loop through each field and validate
+    form.querySelectorAll("input, select").forEach((field) => {
+      APP.handleFieldValidity(field);
+
+      // If any field is invalid, set isValid to false
+      if (!field.checkValidity()) {
+        isFormValid = false;
+      }
+    });
+
+    if (isFormValid) {
+      // Display success message or proceed with form submission
+      const highFive = document.getElementById("high-five");
+      highFive.style.display = "block";
+    } else {
+      // Report validity to highlight all invalid fields
+      form.reportValidity();
+    }
+  },
 };
 document.addEventListener("DOMContentLoaded", APP.init);
