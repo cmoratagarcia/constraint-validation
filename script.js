@@ -20,9 +20,7 @@ const APP = {
       field.addEventListener("input", () => APP.handleFieldValidity(field)); // Listen for input to clear messages immediately
     });
 
-    form.addEventListener("submit", APP.validate);
-
-    zip.addEventListener("input", APP.formatZip); //change to all caps
+      zip.addEventListener("input", APP.formatZip); //change to all caps
 
     //when the form gets submitted, in case of any last-minute changes.
     form.addEventListener("submit", APP.validate);
