@@ -17,6 +17,7 @@ const APP = {
 
     form.querySelectorAll("input").forEach((field) => {
       field.addEventListener("change", () => APP.handleFieldValidity(field));
+      field.addEventListener("input", () => APP.handleFieldValidity(field)); // Listen for input to clear messages immediately
     });
 
     form.addEventListener("submit", APP.validate);
