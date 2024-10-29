@@ -8,6 +8,7 @@
  */
 
 const APP = {
+  submitted: false,
   init() {
     APP.addListeners();
   },
@@ -176,6 +177,7 @@ const APP = {
 
   validate(event) {
     event.preventDefault(); // Prevent form submission for validation check
+    this.submitted = true; // Set flag to indicate form has been submitted
 
     let form = event.target;
     let isFormValid = true;
@@ -183,6 +185,13 @@ const APP = {
     // Loop through each field and validate
     form.querySelectorAll("input, select").forEach((field) => {
       APP.handleFieldValidity(field);
+
+      // Add or remove 'invalid-submitted' based on 'submitted' flag and validity
+      if (this.submitted && !field.checkValidity()) {
+        field.classList.add("invalid-submitted");
+      } else {
+        field.classList.remove("invalid-submitted");
+      }
 
       // If any field is invalid, set isValid to false
       if (!field.checkValidity()) {
